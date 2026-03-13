@@ -49,7 +49,7 @@ export default function Login({ onLogin }) {
 
       {/* Logo */}
       <img
-        src="/mahalla-logo.svg"
+        src="/mahalla-logo.png"
         alt="Mahalla"
         className="w-20 h-20 mb-6 object-contain"
       />
