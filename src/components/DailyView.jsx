@@ -22,7 +22,7 @@ export default function DailyView({ user }) {
   async function fetchLogs() {
     setLoading(true)
     try {
-      const res = await fetch(`/api/logs?userId=${user.id}&startDate=${date}&endDate=${date}`)
+      const res = await fetch(`/api/logs?userName=${encodeURIComponent(user.name)}&startDate=${date}&endDate=${date}`)
       if (!res.ok) return
       setLogs(await res.json())
     } catch {

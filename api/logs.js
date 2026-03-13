@@ -70,13 +70,16 @@ function formatRecord(record) {
 // Fetches logs from Airtable, filtered by optional userId and/or date range.
 // Handles Airtable pagination and sorts results by date descending.
 async function getLogs(apiKey, baseId, req, res) {
-  const { userId, startDate, endDate } = req.query
+  const { userId, userName, startDate, endDate } = req.query
 
   // Build filter clauses — only add the ones we actually have values for
   const clauses = []
 
-  if (userId) {
-    // Airtable linked record fields need FIND() to match by record ID
+  if (userName) {
+    // Filter by the User Name lookup field — more reliable than filtering
+    // by linked record ID, which Airtable formulas resolve to primary field values
+    clauses.push(`{User Name}="${userName}"`)
+  } else if (userId) {
     clauses.push(`FIND("${userId}", ARRAYJOIN({User}))`)
   }
 
