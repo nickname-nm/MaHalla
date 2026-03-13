@@ -15,8 +15,8 @@ export default function AdminUsers({ users, onRefresh, adminUser }) {
   // Creates a new user via POST /api/users
   async function handleCreate(e) {
     e.preventDefault()
-    if (!/^\d{6}$/.test(newCode)) {
-      setError('Code muss genau 6 Ziffern haben')
+    if (!/^\d{4}$/.test(newCode)) {
+      setError('Code muss genau 4 Ziffern haben')
       return
     }
     setCreating(true)
@@ -58,7 +58,7 @@ export default function AdminUsers({ users, onRefresh, adminUser }) {
     }
   }
 
-  const canCreate = newName.trim() && newCode.length === 6
+  const canCreate = newName.trim() && newCode.length === 4
 
   return (
     <div className="px-6 pt-6">
@@ -108,11 +108,11 @@ export default function AdminUsers({ users, onRefresh, adminUser }) {
           </div>
 
           <div>
-            <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Code (6 Ziffern)</p>
+            <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Code (4 Ziffern)</p>
             <input
               type="text" inputMode="numeric" value={newCode}
-              onChange={e => { setNewCode(e.target.value.replace(/\D/g, '').slice(0, 6)); setError('') }}
-              placeholder="000000"
+              onChange={e => { setNewCode(e.target.value.replace(/\D/g, '').slice(0, 4)); setError('') }}
+              placeholder="0000"
               className="w-full bg-black text-white text-base tracking-[0.3em] border-b border-[#FB0007] pb-1 outline-none placeholder-white/20" />
           </div>
 

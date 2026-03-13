@@ -107,9 +107,9 @@ async function createUser(apiKey, baseId, req, res) {
     return res.status(400).json({ error: 'name, code and role are required' })
   }
 
-  // Code must be exactly 6 digits
-  if (!/^\d{6}$/.test(code)) {
-    return res.status(400).json({ error: 'Code must be exactly 6 digits' })
+  // Code must be exactly 4 digits
+  if (!/^\d{4}$/.test(code)) {
+    return res.status(400).json({ error: 'Code must be exactly 4 digits' })
   }
 
   if (!VALID_ROLES.includes(role)) {
