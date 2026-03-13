@@ -5,19 +5,16 @@
 // Pending logs can be edited; approved/rejected logs are read-only.
 
 import React from 'react'
-import MonthlyView from './MonthlyView'
+import LogEntry from './LogEntry'
 
 export default function DailyView({ user, onLogout }) {
   return (
-    <div className="min-h-screen bg-white">
-      <header className="bg-mahalla-black text-white p-4 flex justify-between items-center">
-        <span className="font-bold">MaHalla Stunden</span>
-        <button onClick={onLogout} className="text-sm underline">Logout</button>
+    <div className="min-h-screen bg-black">
+      <header className="bg-black border-b border-white/10 px-6 py-4 flex justify-between items-center">
+        <span className="text-white font-bold uppercase tracking-[0.2em] text-sm">MaHalla Stunden</span>
+        <button onClick={onLogout} className="text-white/40 text-xs uppercase tracking-widest">Logout</button>
       </header>
-      <div className="p-4">
-        <h2 className="text-xl font-bold mb-4">My Hours</h2>
-        <p className="text-gray-400">Daily view — coming soon</p>
-      </div>
+      <LogEntry user={user} />
     </div>
   )
 }

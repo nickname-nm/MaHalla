@@ -21,7 +21,7 @@ export function getTimeOptions() {
   const options = []
   for (let h = 7; h <= 23; h++) {
     options.push(`${String(h).padStart(2, '0')}:00`)
-    if (h < 23) options.push(`${String(h).padStart(2, '0')}:30`)
+    options.push(`${String(h).padStart(2, '0')}:30`)
   }
   return options
 }
