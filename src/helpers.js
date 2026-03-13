@@ -40,3 +40,71 @@ export function formatHours(decimal) {
 export function todayString() {
   return new Date().toISOString().split('T')[0]
 }
+
+/**
+ * Shifts a YYYY-MM-DD date string by a number of days.
+ * Example: shiftDate('2026-03-01', -1) → '2026-02-28'
+ */
+export function shiftDate(dateStr, days) {
+  const [y, m, d] = dateStr.split('-').map(Number)
+  const date = new Date(y, m - 1, d + days)
+  return [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, '0'),
+    String(date.getDate()).padStart(2, '0')
+  ].join('-')
+}
+
+const DAYS_DE = ['SO', 'MO', 'DI', 'MI', 'DO', 'FR', 'SA']
+const MONTHS_SHORT_DE = ['JAN', 'FEB', 'MÄR', 'APR', 'MAI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DEZ']
+const MONTHS_LONG_DE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+
+/**
+ * Formats a YYYY-MM-DD string as a short day label.
+ * Example: formatDayLabel('2026-03-13') → 'FR 13. MÄR'
+ */
+export function formatDayLabel(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number)
+  const date = new Date(y, m - 1, d)
+  return `${DAYS_DE[date.getDay()]} ${d}. ${MONTHS_SHORT_DE[m - 1]}`
+}
+
+/**
+ * Returns the current month as a YYYY-MM string.
+ */
+export function currentMonth() {
+  const now = new Date()
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+}
+
+/**
+ * Returns the first and last day of a given YYYY-MM month.
+ * Example: monthBounds('2026-03') → { start: '2026-03-01', end: '2026-03-31' }
+ */
+export function monthBounds(yearMonth) {
+  const [y, m] = yearMonth.split('-').map(Number)
+  const lastDay = new Date(y, m, 0).getDate()
+  return {
+    start: `${yearMonth}-01`,
+    end: `${yearMonth}-${String(lastDay).padStart(2, '0')}`
+  }
+}
+
+/**
+ * Formats a YYYY-MM string as a human-readable month label.
+ * Example: formatMonthLabel('2026-03') → 'März 2026'
+ */
+export function formatMonthLabel(yearMonth) {
+  const [y, m] = yearMonth.split('-').map(Number)
+  return `${MONTHS_LONG_DE[m - 1]} ${y}`
+}
+
+/**
+ * Shifts a YYYY-MM string by a number of months.
+ * Example: shiftMonth('2026-03', -1) → '2026-02'
+ */
+export function shiftMonth(yearMonth, delta) {
+  const [y, m] = yearMonth.split('-').map(Number)
+  const date = new Date(y, m - 1 + delta, 1)
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+}
