@@ -111,8 +111,9 @@ async function getLogs(apiKey, baseId, req, res) {
       })
 
       if (!response.ok) {
-        console.error('Airtable GET logs failed:', response.status, await response.text())
-        return res.status(500).json({ error: 'Server error' })
+        const errText = await response.text()
+        console.error('Airtable GET logs failed:', response.status, errText)
+        return res.status(500).json({ error: 'Airtable error', detail: errText, status: response.status })
       }
 
       const data = await response.json()
