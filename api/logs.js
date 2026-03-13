@@ -84,11 +84,11 @@ async function getLogs(apiKey, baseId, req, res) {
   }
 
   if (startDate) {
-    clauses.push(`{Date}>="${startDate}"`)
+    clauses.push(`DATETIME_FORMAT({Date},"YYYY-MM-DD")>="${startDate}"`)
   }
 
   if (endDate) {
-    clauses.push(`{Date}<="${endDate}"`)
+    clauses.push(`DATETIME_FORMAT({Date},"YYYY-MM-DD")<="${endDate}"`)
   }
 
   const formula = clauses.length > 0
