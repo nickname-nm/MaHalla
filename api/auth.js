@@ -55,7 +55,7 @@ export default async function handler(req, res) {
   return res.status(200).json({
     id: record.id,
     name: record.fields.Name,
-    role: record.fields.Role,
+    role: record.fields.Role?.toLowerCase(),
     code: record.fields.Code
   })
 }
