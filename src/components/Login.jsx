@@ -1,24 +1,33 @@
 // Login.jsx — login screen
-// Single 6-digit code input. Calls POST /api/auth on submit.
+// Two fields: name (text) and 6-digit code (numeric).
+// On submit, calls POST /api/auth with { name, code }.
 // On success, passes user data up to App.jsx via props.onLogin().
 
 import React, { useState } from 'react'
 
 export default function Login({ onLogin }) {
+  const [name, setName] = useState('')
   const [code, setCode] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
   // Only allow digits, max 6 characters
-  function handleChange(e) {
+  function handleCodeChange(e) {
     const val = e.target.value.replace(/\D/g, '').slice(0, 6)
     setCode(val)
     setError(false)
   }
 
+  function handleNameChange(e) {
+    setName(e.target.value)
+    setError(false)
+  }
+
+  const canSubmit = name.trim().length > 0 && code.length === 6
+
   async function handleSubmit(e) {
     e.preventDefault()
-    if (code.length !== 6) return
+    if (!canSubmit) return
 
     setLoading(true)
     setError(false)
@@ -27,7 +36,7 @@ export default function Login({ onLogin }) {
       const res = await fetch('/api/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code })
+        body: JSON.stringify({ name: name.trim(), code })
       })
 
       if (!res.ok) {
@@ -55,50 +64,57 @@ export default function Login({ onLogin }) {
       />
 
       {/* App name */}
-      <h1
-        className="text-white font-bold uppercase mb-12 tracking-[0.25em] text-sm"
-      >
+      <h1 className="text-white font-bold uppercase mb-12 tracking-[0.25em] text-sm">
         MaHalla Stunden
       </h1>
 
-      <form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col gap-10">
+      <form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col gap-8">
 
-        {/* Code input — bottom border only, no box */}
-        <input
-          type="text"
-          inputMode="numeric"
-          pattern="\d{6}"
-          value={code}
-          onChange={handleChange}
-          placeholder="000000"
-          autoFocus
-          className={[
-            'bg-transparent text-white text-center text-4xl font-bold tracking-[0.3em]',
-            'border-0 border-b-2 outline-none w-full pb-2',
-            'placeholder-white/20',
-            error ? 'border-white' : 'border-[#FB0007]'
-          ].join(' ')}
-        />
+        {/* Name input */}
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Name</p>
+          <input
+            type="text"
+            value={name}
+            onChange={handleNameChange}
+            placeholder="Dein Name"
+            autoFocus
+            autoComplete="off"
+            className="bg-transparent text-white text-xl font-bold w-full border-0 border-b-2 border-[#FB0007] pb-2 outline-none placeholder-white/20"
+          />
+        </div>
+
+        {/* Code input */}
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Code</p>
+          <input
+            type="text"
+            inputMode="numeric"
+            pattern="\d{6}"
+            value={code}
+            onChange={handleCodeChange}
+            placeholder="000000"
+            autoComplete="off"
+            className="bg-transparent text-white text-xl font-bold tracking-[0.3em] w-full border-0 border-b-2 border-[#FB0007] pb-2 outline-none placeholder-white/20"
+          />
+        </div>
 
         {/* Error message */}
-        <p
-          className={[
-            'text-white/60 text-xs uppercase tracking-widest text-center -mt-6 transition-opacity duration-150',
-            error ? 'opacity-100' : 'opacity-0'
-          ].join(' ')}
-        >
-          Code nicht gefunden
+        <p className={[
+          'text-white/60 text-xs uppercase tracking-widest text-center -mt-4',
+          error ? 'opacity-100' : 'opacity-0'
+        ].join(' ')}>
+          Name oder Code nicht gefunden
         </p>
 
         {/* Submit button */}
         <button
           type="submit"
-          disabled={code.length !== 6 || loading}
+          disabled={!canSubmit || loading}
           className={[
             'w-full py-4 text-sm font-bold uppercase tracking-[0.2em]',
-            'transition-opacity duration-150',
-            code.length === 6 && !loading
-              ? 'bg-[#FB0007] text-black opacity-100 cursor-pointer'
+            canSubmit && !loading
+              ? 'bg-[#FB0007] text-black cursor-pointer'
               : 'bg-[#FB0007] text-black opacity-30 cursor-not-allowed'
           ].join(' ')}
         >

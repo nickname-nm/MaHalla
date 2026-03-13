@@ -1,8 +1,9 @@
 // api/auth.js — POST /api/auth
-// Validates a user login code against the Airtable Users table.
-// Expects request body: { code: "123456" }
+// Validates a user by matching both name and code against the Airtable Users table.
+// Expects request body: { name: "John", code: "123456" }
+// Name check is case-insensitive.
 // Returns 200 { id, name, role, code } on success.
-// Returns 401 { error } if code not found or user is inactive.
+// Returns 401 { error } if no match found or user is inactive.
 // Returns 500 { error } if the Airtable request fails.
 
 export default async function handler(req, res) {
@@ -10,19 +11,18 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { code } = req.body
+  const { name, code } = req.body
 
-  if (!code) {
-    return res.status(400).json({ error: 'Code is required' })
+  if (!name || !code) {
+    return res.status(400).json({ error: 'Name and code are required' })
   }
 
   const apiKey = process.env.AIRTABLE_API_KEY
   const baseId = process.env.AIRTABLE_BASE_ID
 
-  // Build the Airtable filter formula:
-  // Match the submitted code AND require the user to be active
+  // Match code exactly, name case-insensitively, and require Active = true
   const formula = encodeURIComponent(
-    `AND({Code}="${code}", {Active}=TRUE())`
+    `AND({Code}="${code}", LOWER({Name})="${name.toLowerCase().trim()}", {Active}=TRUE())`
   )
 
   const url = `https://api.airtable.com/v0/${baseId}/Users?filterByFormula=${formula}&maxRecords=1`
@@ -31,9 +31,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`
-      }
+      headers: { Authorization: `Bearer ${apiKey}` }
     })
 
     if (!response.ok) {
@@ -49,17 +47,15 @@ export default async function handler(req, res) {
 
   // No matching active user found
   if (!data.records || data.records.length === 0) {
-    return res.status(401).json({ error: 'Code nicht gefunden' })
+    return res.status(401).json({ error: 'Name oder Code nicht gefunden' })
   }
 
-  // Extract the user fields from the first (and only) matching record
+  // Return the matched user
   const record = data.records[0]
-  const user = {
+  return res.status(200).json({
     id: record.id,
     name: record.fields.Name,
     role: record.fields.Role,
     code: record.fields.Code
-  }
-
-  return res.status(200).json(user)
+  })
 }
