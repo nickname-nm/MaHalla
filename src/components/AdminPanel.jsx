@@ -13,7 +13,7 @@ const TABS = [
   { key: 'projects', label: 'Projekte' }
 ]
 
-export default function AdminPanel({ user, onLogout }) {
+export default function AdminPanel({ user }) {
   const [tab, setTab] = useState('logs')
   const [users, setUsers] = useState([])
 
@@ -35,18 +35,7 @@ export default function AdminPanel({ user, onLogout }) {
   }
 
   return (
-    <div className="min-h-screen bg-black pb-16">
-
-      {/* Header */}
-      <header className="px-6 py-4 border-b border-white/10 flex justify-between items-center">
-        <div>
-          <span className="text-white font-bold uppercase tracking-[0.2em] text-sm">MaHalla Stunden</span>
-          <span className="text-[#FB0007] text-xs uppercase tracking-widest ml-3">Admin</span>
-        </div>
-        <button onClick={onLogout} className="text-white/40 text-xs uppercase tracking-widest">
-          Logout
-        </button>
-      </header>
+    <div className="bg-black">
 
       {/* Tab navigation */}
       <div className="flex border-b border-white/10">

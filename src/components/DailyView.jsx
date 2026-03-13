@@ -1,19 +1,17 @@
-// DailyView.jsx — member dashboard
-// Default screen after login. Shows daily log list and monthly summary.
-// Tab toggle switches between TAG (daily) and MONAT (monthly) views.
-// A red FAB opens the log entry form as a fullscreen overlay.
+// DailyView.jsx — member dashboard (ÜBERSICHT view)
+// Shows daily log list with date navigation and a monthly summary.
+// Tab toggle between TAG (daily) and MONAT (monthly).
+// Header and navigation are handled by App.jsx.
 
 import React, { useState, useEffect } from 'react'
-import LogEntry from './LogEntry'
 import MonthlyView from './MonthlyView'
 import { todayString, shiftDate, formatDayLabel } from '../helpers'
 
-export default function DailyView({ user, onLogout }) {
-  const [tab, setTab] = useState('daily')       // 'daily' | 'monthly'
+export default function DailyView({ user }) {
+  const [tab, setTab] = useState('daily')
   const [date, setDate] = useState(todayString())
   const [logs, setLogs] = useState([])
   const [loading, setLoading] = useState(false)
-  const [showForm, setShowForm] = useState(false)
 
   // Fetch logs for the selected date whenever date or tab changes
   useEffect(() => {
@@ -28,7 +26,7 @@ export default function DailyView({ user, onLogout }) {
       if (!res.ok) return
       setLogs(await res.json())
     } catch {
-      // silently fail — empty list will show
+      // silently fail — empty state will show
     } finally {
       setLoading(false)
     }
@@ -40,15 +38,7 @@ export default function DailyView({ user, onLogout }) {
   ) / 10
 
   return (
-    <div className="min-h-screen bg-black pb-24">
-
-      {/* Header */}
-      <header className="px-6 py-4 border-b border-white/10 flex justify-between items-center">
-        <span className="text-white font-bold uppercase tracking-[0.2em] text-sm">MaHalla Stunden</span>
-        <button onClick={onLogout} className="text-white/40 text-xs uppercase tracking-widest">
-          Logout
-        </button>
-      </header>
+    <div className="bg-black">
 
       {/* Tab toggle */}
       <div className="flex border-b border-white/10">
@@ -107,39 +97,8 @@ export default function DailyView({ user, onLogout }) {
         </div>
       )}
 
-      {/* Monthly view — renders MonthlyView component */}
+      {/* Monthly view */}
       {tab === 'monthly' && <MonthlyView user={user} />}
-
-      {/* FAB — floating button to open log entry form */}
-      <button
-        onClick={() => setShowForm(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-[#FB0007] text-black font-bold text-3xl flex items-center justify-center"
-      >
-        +
-      </button>
-
-      {/* Log entry fullscreen overlay */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black z-50 overflow-y-auto">
-          <div className="px-6 py-4 border-b border-white/10 flex justify-between items-center">
-            <span className="text-white text-xs uppercase tracking-[0.2em] font-bold">Stunden eintragen</span>
-            <button
-              onClick={() => setShowForm(false)}
-              className="text-white/40 text-xs uppercase tracking-widest"
-            >
-              ✕ Schließen
-            </button>
-          </div>
-          <LogEntry
-            user={user}
-            onSaved={() => {
-              setShowForm(false)
-              // Refresh daily list if user is on the daily tab
-              if (tab === 'daily') fetchLogs()
-            }}
-          />
-        </div>
-      )}
 
     </div>
   )
@@ -166,11 +125,7 @@ function LogCard({ log }) {
 
 // Status badge — style differs per status value
 function StatusBadge({ status }) {
-  if (status === 'approved') {
-    return <span className="text-[#FB0007] text-[10px] uppercase tracking-widest">Genehmigt</span>
-  }
-  if (status === 'rejected') {
-    return <span className="text-white/30 text-[10px] uppercase tracking-widest line-through">Abgelehnt</span>
-  }
+  if (status === 'approved') return <span className="text-[#FB0007] text-[10px] uppercase tracking-widest">Genehmigt</span>
+  if (status === 'rejected') return <span className="text-white/30 text-[10px] uppercase tracking-widest line-through">Abgelehnt</span>
   return <span className="text-white/60 text-[10px] uppercase tracking-widest">Ausstehend</span>
 }
