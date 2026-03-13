@@ -53,13 +53,13 @@ function formatRecord(record) {
   return {
     id: record.id,
     userId: f.User?.[0] ?? null,
-    userName: f['User Name'] ?? null,  // populated via Airtable lookup field
+    userName: f['user name'] ?? null,  // populated via Airtable lookup field
     date: f.Date ?? null,
     startTime: f['Start Time'] ?? null,
     endTime: f['End Time'] ?? null,
     hours: f.Hours ?? null,
     projectId: f.Project?.[0] ?? null,
-    projectName: f['Project Name'] ?? null, // populated via Airtable lookup field
+    projectName: f['project name'] ?? null, // populated via Airtable lookup field
     description: f.Description ?? null,
     status: f.Status ?? 'pending',
     adminNote: f['Admin Note'] ?? null,

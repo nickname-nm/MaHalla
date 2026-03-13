@@ -24,7 +24,7 @@ export default function MonthlyView({ user }) {
       const res = await fetch(`/api/logs?startDate=${start}&endDate=${end}`)
       if (!res.ok) return
       const all = await res.json()
-      setLogs(all.filter(log => log.userName === user.name))
+      setLogs(all.filter(log => log.userId === user.id))
     } catch {
       // silently fail — empty state will show
     } finally {
