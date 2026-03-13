@@ -160,7 +160,6 @@ async function createLog(apiKey, baseId, req, res) {
           Date: date,
           'Start Time': startTime,
           'End Time': endTime,
-          Hours: hours,
           Project: [projectId], // linked record — must be an array
           Description: description,
           Status: 'pending'
