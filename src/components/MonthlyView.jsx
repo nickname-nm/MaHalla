@@ -33,7 +33,7 @@ export default function MonthlyView({ user }) {
 
   // Group logs by project name and sum hours per project
   const byProject = logs.reduce((acc, log) => {
-    const name = log.projectName || 'Unbekannt'
+    const name = log.projectName || 'Unknown'
     acc[name] = Math.round(((acc[name] || 0) + (log.hours || 0)) * 10) / 10
     return acc
   }, {})
@@ -66,9 +66,9 @@ export default function MonthlyView({ user }) {
       </div>
 
       {loading ? (
-        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-16">Laden...</p>
+        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-16">Loading...</p>
       ) : Object.keys(byProject).length === 0 ? (
-        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-16">Keine Einträge</p>
+        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-16">No entries</p>
       ) : (
         <>
           {/* Per-project rows */}
@@ -81,7 +81,7 @@ export default function MonthlyView({ user }) {
 
           {/* Grand total */}
           <div className="flex justify-between items-end pt-8">
-            <span className="text-white/40 text-xs uppercase tracking-[0.2em]">Gesamt</span>
+            <span className="text-white/40 text-xs uppercase tracking-[0.2em]">Total</span>
             <span className="text-white font-bold text-5xl leading-none">{totalHours}h</span>
           </div>
         </>

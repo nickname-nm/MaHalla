@@ -37,14 +37,14 @@ export default function AdminProjects({ adminUser }) {
       })
       const data = await res.json()
       if (!res.ok) {
-        setError(data.error || 'Fehler beim Erstellen')
+        setError(data.error || 'Error creating project')
         return
       }
       setNewName('')
       setNewType('event')
       fetchProjects()
     } catch {
-      setError('Verbindungsfehler')
+      setError('Connection error')
     } finally {
       setCreating(false)
     }
@@ -55,13 +55,13 @@ export default function AdminProjects({ adminUser }) {
 
       {/* Project list */}
       <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-4">
-        Aktive Projekte {!loading && `(${projects.length})`}
+        Active Projects {!loading && `(${projects.length})`}
       </p>
 
       {loading ? (
-        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-8">Laden...</p>
+        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-8">Loading...</p>
       ) : projects.length === 0 ? (
-        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-8">Keine Projekte</p>
+        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-8">No projects</p>
       ) : (
         projects.map(p => (
           <div key={p.id} className="flex justify-between items-center py-4 border-b border-white/10">
@@ -73,18 +73,18 @@ export default function AdminProjects({ adminUser }) {
 
       {/* Add new project form */}
       <div className="mt-10 pt-6 border-t border-white/10">
-        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-6">Neues Projekt</p>
+        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-6">New Project</p>
 
         <form onSubmit={handleCreate} className="flex flex-col gap-6">
           <div>
             <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Name</p>
             <input type="text" value={newName} onChange={e => { setNewName(e.target.value); setError('') }}
-              placeholder="Projektname"
+              placeholder="Project name"
               className="w-full bg-black text-white text-base border-b border-[#FB0007] pb-1 outline-none placeholder-white/20" />
           </div>
 
           <div>
-            <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Typ</p>
+            <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Type</p>
             <select value={newType} onChange={e => setNewType(e.target.value)}
               className="w-full bg-black text-white text-base border-b border-[#FB0007] pb-1 outline-none appearance-none">
               <option value="event">Event</option>
@@ -99,7 +99,7 @@ export default function AdminProjects({ adminUser }) {
               'w-full py-4 text-sm font-bold uppercase tracking-[0.2em]',
               newName.trim() && !creating ? 'bg-[#FB0007] text-black' : 'bg-[#FB0007] text-black opacity-30 cursor-not-allowed'
             ].join(' ')}>
-            {creating ? '...' : 'Projekt erstellen'}
+            {creating ? '...' : 'Create project'}
           </button>
         </form>
       </div>

@@ -67,7 +67,7 @@ export default function Login({ onLogin }) {
             type="text"
             value={name}
             onChange={handleNameChange}
-            placeholder="Dein Name"
+            placeholder="Your name"
             autoFocus
             autoComplete="off"
             className="bg-transparent text-white text-xl font-bold w-full border-0 border-b-2 border-[#FB0007] pb-2 outline-none placeholder-white/20"
@@ -118,7 +118,7 @@ export default function Login({ onLogin }) {
           'text-white/60 text-xs uppercase tracking-widest text-center -mt-4',
           error ? 'opacity-100' : 'opacity-0'
         ].join(' ')}>
-          Name oder Code nicht gefunden
+          Name or code not found
         </p>
 
         {/* Submit button */}
@@ -132,7 +132,7 @@ export default function Login({ onLogin }) {
               : 'bg-[#FB0007] text-black opacity-30 cursor-not-allowed'
           ].join(' ')}
         >
-          {loading ? '...' : 'Anmelden'}
+          {loading ? '...' : 'Sign In'}
         </button>
 
       </form>

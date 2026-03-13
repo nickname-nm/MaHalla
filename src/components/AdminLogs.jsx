@@ -65,34 +65,34 @@ export default function AdminLogs({ users, adminUser }) {
       <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-4">Filter</p>
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Von</p>
+          <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">From</p>
           <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
             className="w-full bg-black text-white text-sm border-b border-[#FB0007] pb-1 outline-none" />
         </div>
         <div>
-          <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Bis</p>
+          <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">To</p>
           <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
             className="w-full bg-black text-white text-sm border-b border-[#FB0007] pb-1 outline-none" />
         </div>
       </div>
       <div className="mb-8">
-        <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Benutzer</p>
+        <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">User</p>
         <select value={userId} onChange={e => setUserId(e.target.value)}
           className="w-full bg-black text-white text-sm border-b border-[#FB0007] pb-1 outline-none appearance-none">
-          <option value="">Alle</option>
+          <option value="">All</option>
           {users.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
         </select>
       </div>
 
       {/* Log list */}
       <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-4">
-        Einträge {!loading && `(${logs.length})`}
+        Entries {!loading && `(${logs.length})`}
       </p>
 
       {loading ? (
-        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-12">Laden...</p>
+        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-12">Loading...</p>
       ) : logs.length === 0 ? (
-        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-12">Keine Einträge</p>
+        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-12">No entries</p>
       ) : (
         logs.map(log => (
           <div key={log.id} className="border-b border-white/10 py-4">
@@ -122,11 +122,11 @@ export default function AdminLogs({ users, adminUser }) {
                 <div className="flex gap-3">
                   <button onClick={() => approve(log.id)}
                     className="bg-[#FB0007] text-black text-[10px] font-bold uppercase tracking-widest px-3 py-1.5">
-                    Genehmigen
+                    Approve
                   </button>
                   <button onClick={() => setRejectTarget({ id: log.id, note: '' })}
                     className="border border-white/30 text-white/60 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5">
-                    Ablehnen
+                    Reject
                   </button>
                 </div>
               )}
@@ -139,18 +139,18 @@ export default function AdminLogs({ users, adminUser }) {
                   type="text"
                   value={rejectTarget.note}
                   onChange={e => setRejectTarget({ ...rejectTarget, note: e.target.value })}
-                  placeholder="Anmerkung (optional)"
+                  placeholder="Note (optional)"
                   autoFocus
                   className="w-full bg-black text-white text-sm border-b border-[#FB0007] pb-1 outline-none placeholder-white/20 mb-3"
                 />
                 <div className="flex gap-3">
                   <button onClick={reject}
                     className="bg-[#FB0007] text-black text-[10px] font-bold uppercase tracking-widest px-3 py-1.5">
-                    Bestätigen
+                    Confirm
                   </button>
                   <button onClick={() => setRejectTarget(null)}
                     className="text-white/40 text-[10px] uppercase tracking-widest px-3 py-1.5">
-                    Abbrechen
+                    Cancel
                   </button>
                 </div>
               </div>
@@ -165,11 +165,11 @@ export default function AdminLogs({ users, adminUser }) {
 
 // Status badge with different styling per status
 function StatusBadge({ status, adminNote }) {
-  if (status === 'approved') return <span className="text-[#FB0007] text-[10px] uppercase tracking-widest">Genehmigt</span>
+  if (status === 'approved') return <span className="text-[#FB0007] text-[10px] uppercase tracking-widest">Approved</span>
   if (status === 'rejected') return (
     <span className="text-white/30 text-[10px] uppercase tracking-widest line-through">
-      Abgelehnt{adminNote ? ` — ${adminNote}` : ''}
+      Rejected{adminNote ? ` — ${adminNote}` : ''}
     </span>
   )
-  return <span className="text-white/60 text-[10px] uppercase tracking-widest">Ausstehend</span>
+  return <span className="text-white/60 text-[10px] uppercase tracking-widest">Pending</span>
 }

@@ -75,12 +75,12 @@ export default function ProjectSearch({ projects, onSelect, selectedName }) {
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Projekt suchen..."
+            placeholder="Search project..."
             className="w-full bg-transparent text-white text-base outline-none placeholder-white/30"
           />
         ) : (
           <p className={`text-base ${selectedName ? 'text-white' : 'text-white/30'}`}>
-            {selectedName || 'Projekt wählen'}
+            {selectedName || 'Select project'}
           </p>
         )}
       </div>
@@ -93,7 +93,7 @@ export default function ProjectSearch({ projects, onSelect, selectedName }) {
           {showRecents && (
             <>
               <p className="px-4 pt-3 pb-1 text-[10px] uppercase tracking-[0.2em] text-white/30">
-                Zuletzt verwendet
+                Recently used
               </p>
               {validRecents.map(project => (
                 <button
@@ -122,7 +122,7 @@ export default function ProjectSearch({ projects, onSelect, selectedName }) {
               </button>
             ))
           ) : (
-            <p className="px-4 py-3 text-white/30 text-sm">Kein Projekt gefunden</p>
+            <p className="px-4 py-3 text-white/30 text-sm">No project found</p>
           )}
 
         </div>

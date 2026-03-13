@@ -9,8 +9,8 @@ import AdminProjects from './AdminProjects'
 
 const TABS = [
   { key: 'logs',     label: 'Logs' },
-  { key: 'users',    label: 'Benutzer' },
-  { key: 'projects', label: 'Projekte' }
+  { key: 'users',    label: 'Users' },
+  { key: 'projects', label: 'Projects' }
 ]
 
 export default function AdminPanel({ user }) {

@@ -16,7 +16,7 @@ export default function AdminUsers({ users, onRefresh, adminUser }) {
   async function handleCreate(e) {
     e.preventDefault()
     if (!/^\d{4}$/.test(newCode)) {
-      setError('Code muss genau 4 Ziffern haben')
+      setError('Code must be exactly 4 digits')
       return
     }
     setCreating(true)
@@ -29,7 +29,7 @@ export default function AdminUsers({ users, onRefresh, adminUser }) {
       })
       const data = await res.json()
       if (!res.ok) {
-        setError(data.error || 'Fehler beim Erstellen')
+        setError(data.error || 'Error creating user')
         return
       }
       setNewName('')
@@ -37,7 +37,7 @@ export default function AdminUsers({ users, onRefresh, adminUser }) {
       setNewRole('member')
       onRefresh()
     } catch {
-      setError('Verbindungsfehler')
+      setError('Connection error')
     } finally {
       setCreating(false)
     }
@@ -65,11 +65,11 @@ export default function AdminUsers({ users, onRefresh, adminUser }) {
 
       {/* User list */}
       <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-4">
-        Benutzer ({users.length})
+        Users ({users.length})
       </p>
 
       {users.length === 0 ? (
-        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-8">Keine Benutzer</p>
+        <p className="text-white/30 text-xs uppercase tracking-widest text-center py-8">No users</p>
       ) : (
         users.map(u => (
           <div key={u.id} className={`flex justify-between items-center py-4 border-b border-white/10 ${!u.active ? 'opacity-40' : ''}`}>
@@ -89,7 +89,7 @@ export default function AdminUsers({ users, onRefresh, adminUser }) {
                   : 'border-[#FB0007] text-[#FB0007]'
               ].join(' ')}
             >
-              {togglingId === u.id ? '...' : u.active ? 'Deaktivieren' : 'Aktivieren'}
+              {togglingId === u.id ? '...' : u.active ? 'Deactivate' : 'Activate'}
             </button>
           </div>
         ))
@@ -97,18 +97,18 @@ export default function AdminUsers({ users, onRefresh, adminUser }) {
 
       {/* Create new user form */}
       <div className="mt-10 pt-6 border-t border-white/10">
-        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-6">Neuer Benutzer</p>
+        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-6">New User</p>
 
         <form onSubmit={handleCreate} className="flex flex-col gap-6">
           <div>
             <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Name</p>
             <input type="text" value={newName} onChange={e => { setNewName(e.target.value); setError('') }}
-              placeholder="Vollständiger Name"
+              placeholder="Full name"
               className="w-full bg-black text-white text-base border-b border-[#FB0007] pb-1 outline-none placeholder-white/20" />
           </div>
 
           <div>
-            <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Code (4 Ziffern)</p>
+            <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Code (4 digits)</p>
             <input
               type="text" inputMode="numeric" value={newCode}
               onChange={e => { setNewCode(e.target.value.replace(/\D/g, '').slice(0, 4)); setError('') }}
@@ -117,7 +117,7 @@ export default function AdminUsers({ users, onRefresh, adminUser }) {
           </div>
 
           <div>
-            <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Rolle</p>
+            <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-1">Role</p>
             <select value={newRole} onChange={e => setNewRole(e.target.value)}
               className="w-full bg-black text-white text-base border-b border-[#FB0007] pb-1 outline-none appearance-none">
               <option value="member">Member</option>
@@ -132,7 +132,7 @@ export default function AdminUsers({ users, onRefresh, adminUser }) {
               'w-full py-4 text-sm font-bold uppercase tracking-[0.2em]',
               canCreate && !creating ? 'bg-[#FB0007] text-black' : 'bg-[#FB0007] text-black opacity-30 cursor-not-allowed'
             ].join(' ')}>
-            {creating ? '...' : 'Benutzer erstellen'}
+            {creating ? '...' : 'Create user'}
           </button>
         </form>
       </div>

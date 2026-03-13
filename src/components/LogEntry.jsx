@@ -91,7 +91,7 @@ export default function LogEntry({ user, onSaved }) {
 
       if (!res.ok) {
         const data = await res.json()
-        setError(data.error || 'Fehler beim Speichern')
+        setError(data.error || 'Error saving')
         return
       }
 
@@ -108,7 +108,7 @@ export default function LogEntry({ user, onSaved }) {
 
       if (onSaved) onSaved()
     } catch {
-      setError('Verbindungsfehler — bitte erneut versuchen')
+      setError('Connection error — please try again')
     } finally {
       setSubmitting(false)
     }
@@ -119,7 +119,7 @@ export default function LogEntry({ user, onSaved }) {
 
       {/* Date */}
       <div>
-        <Label>Datum</Label>
+        <Label>Date</Label>
         <input
           type="date"
           value={date}
@@ -131,7 +131,7 @@ export default function LogEntry({ user, onSaved }) {
       {/* Start time + End time side by side */}
       <div className="grid grid-cols-2 gap-6">
         <div>
-          <Label>Von</Label>
+          <Label>From</Label>
           <TimeSelect
             value={startTime}
             onChange={val => {
@@ -143,7 +143,7 @@ export default function LogEntry({ user, onSaved }) {
           />
         </div>
         <div>
-          <Label>Bis</Label>
+          <Label>To</Label>
           <TimeSelect
             value={endTime}
             onChange={setEndTime}
@@ -154,7 +154,7 @@ export default function LogEntry({ user, onSaved }) {
 
       {/* Project selector */}
       <div>
-        <Label>Projekt</Label>
+        <Label>Project</Label>
         <ProjectSearch
           projects={projects}
           selectedName={project?.name}
@@ -164,11 +164,11 @@ export default function LogEntry({ user, onSaved }) {
 
       {/* Description */}
       <div>
-        <Label>Beschreibung</Label>
+        <Label>Description</Label>
         <textarea
           value={description}
           onChange={e => setDescription(e.target.value)}
-          placeholder="Was wurde gemacht?"
+          placeholder="What was done?"
           rows={3}
           className="w-full bg-black text-white text-base border-0 border-b-2 border-[#FB0007] pb-2 outline-none resize-none placeholder-white/30"
         />
@@ -182,7 +182,7 @@ export default function LogEntry({ user, onSaved }) {
       {/* Success message */}
       {success && (
         <p className="text-white text-xs uppercase tracking-widest -mt-4">
-          Stunden gespeichert ✓
+          Hours saved ✓
         </p>
       )}
 
@@ -197,7 +197,7 @@ export default function LogEntry({ user, onSaved }) {
             : 'bg-[#FB0007] text-black opacity-30 cursor-not-allowed'
         ].join(' ')}
       >
-        {submitting ? '...' : 'Stunden eintragen'}
+        {submitting ? '...' : 'Log hours'}
       </button>
 
     </form>

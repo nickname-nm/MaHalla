@@ -51,7 +51,7 @@ export default function DailyView({ user }) {
               tab === t ? 'text-white border-b-2 border-[#FB0007]' : 'text-white/30'
             ].join(' ')}
           >
-            {t === 'daily' ? 'Tag' : 'Monat'}
+            {t === 'daily' ? 'Day' : 'Month'}
           </button>
         ))}
       </div>
@@ -81,9 +81,9 @@ export default function DailyView({ user }) {
 
           {/* Log list */}
           {loading ? (
-            <p className="text-white/30 text-xs uppercase tracking-widest text-center py-16">Laden...</p>
+            <p className="text-white/30 text-xs uppercase tracking-widest text-center py-16">Loading...</p>
           ) : logs.length === 0 ? (
-            <p className="text-white/30 text-xs uppercase tracking-widest text-center py-16">Keine Einträge</p>
+            <p className="text-white/30 text-xs uppercase tracking-widest text-center py-16">No entries</p>
           ) : (
             <>
               {logs.map(log => <LogCard key={log.id} log={log} />)}
@@ -125,7 +125,7 @@ function LogCard({ log }) {
 
 // Status badge — style differs per status value
 function StatusBadge({ status }) {
-  if (status === 'approved') return <span className="text-[#FB0007] text-[10px] uppercase tracking-widest">Genehmigt</span>
-  if (status === 'rejected') return <span className="text-white/30 text-[10px] uppercase tracking-widest line-through">Abgelehnt</span>
-  return <span className="text-white/60 text-[10px] uppercase tracking-widest">Ausstehend</span>
+  if (status === 'approved') return <span className="text-[#FB0007] text-[10px] uppercase tracking-widest">Approved</span>
+  if (status === 'rejected') return <span className="text-white/30 text-[10px] uppercase tracking-widest line-through">Rejected</span>
+  return <span className="text-white/60 text-[10px] uppercase tracking-widest">Pending</span>
 }

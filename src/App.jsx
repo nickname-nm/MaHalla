@@ -48,8 +48,8 @@ export default function App() {
 
   // Build nav items based on role
   const navItems = [
-    { key: 'stunden',   label: 'Stunden' },
-    { key: 'uebersicht', label: 'Übersicht' },
+    { key: 'stunden',   label: 'Hours' },
+    { key: 'uebersicht', label: 'Overview' },
     ...(user.role === 'admin' ? [{ key: 'admin', label: 'Admin' }] : [])
   ]
 

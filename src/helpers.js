@@ -55,18 +55,18 @@ export function shiftDate(dateStr, days) {
   ].join('-')
 }
 
-const DAYS_DE = ['SO', 'MO', 'DI', 'MI', 'DO', 'FR', 'SA']
-const MONTHS_SHORT_DE = ['JAN', 'FEB', 'MÄR', 'APR', 'MAI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DEZ']
-const MONTHS_LONG_DE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+const DAYS_EN = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+const MONTHS_SHORT_EN = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+const MONTHS_LONG_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 /**
  * Formats a YYYY-MM-DD string as a short day label.
- * Example: formatDayLabel('2026-03-13') → 'FR 13. MÄR'
+ * Example: formatDayLabel('2026-03-13') → 'FRI 13. MAR'
  */
 export function formatDayLabel(dateStr) {
   const [y, m, d] = dateStr.split('-').map(Number)
   const date = new Date(y, m - 1, d)
-  return `${DAYS_DE[date.getDay()]} ${d}. ${MONTHS_SHORT_DE[m - 1]}`
+  return `${DAYS_EN[date.getDay()]} ${d}. ${MONTHS_SHORT_EN[m - 1]}`
 }
 
 /**
@@ -92,11 +92,11 @@ export function monthBounds(yearMonth) {
 
 /**
  * Formats a YYYY-MM string as a human-readable month label.
- * Example: formatMonthLabel('2026-03') → 'März 2026'
+ * Example: formatMonthLabel('2026-03') → 'March 2026'
  */
 export function formatMonthLabel(yearMonth) {
   const [y, m] = yearMonth.split('-').map(Number)
-  return `${MONTHS_LONG_DE[m - 1]} ${y}`
+  return `${MONTHS_LONG_EN[m - 1]} ${y}`
 }
 
 /**
