@@ -1,6 +1,6 @@
 // App.jsx — root component
 // Handles routing between Login, Member Dashboard, and Admin Panel
-// Auth state is stored in sessionStorage (set after successful login)
+// Auth state is stored in localStorage (persists across browser sessions)
 
 import React, { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
@@ -11,19 +11,19 @@ import AdminPanel from './components/AdminPanel'
 export default function App() {
   // user is null when logged out, or { name, id, role } when logged in
   const [user, setUser] = useState(() => {
-    const stored = sessionStorage.getItem('mahalla_user')
+    const stored = localStorage.getItem('mahalla_user')
     return stored ? JSON.parse(stored) : null
   })
 
   // Called by Login component on successful auth
   function handleLogin(userData) {
-    sessionStorage.setItem('mahalla_user', JSON.stringify(userData))
+    localStorage.setItem('mahalla_user', JSON.stringify(userData))
     setUser(userData)
   }
 
   // Called when user logs out
   function handleLogout() {
-    sessionStorage.removeItem('mahalla_user')
+    localStorage.removeItem('mahalla_user')
     setUser(null)
   }
 
