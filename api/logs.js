@@ -52,14 +52,14 @@ function formatRecord(record) {
   const f = record.fields
   return {
     id: record.id,
-    userId: f.User?.[0] ?? null,
-    userName: f['user name'] ?? null,  // populated via Airtable lookup field
+    userId: f['user name']?.[0] ?? null,   // 'user name' is the linked record field
+    userName: null,                         // no separate display name field
     date: f.Date ?? null,
     startTime: f['Start Time'] ?? null,
     endTime: f['End Time'] ?? null,
     hours: f.Hours ?? null,
-    projectId: f.Project?.[0] ?? null,
-    projectName: f['project name'] ?? null, // populated via Airtable lookup field
+    projectId: f['project name']?.[0] ?? null, // 'project name' is the linked record field
+    projectName: null,                          // no separate display name field
     description: f.Description ?? null,
     status: f.Status ?? 'pending',
     adminNote: f['Admin Note'] ?? null,
@@ -160,11 +160,11 @@ async function createLog(apiKey, baseId, req, res) {
       },
       body: JSON.stringify({
         fields: {
-          User: [userId],       // linked record — must be an array
+          'user name': [userId],  // linked record — must be an array
           Date: date,
           'Start Time': startTime,
           'End Time': endTime,
-          Project: [projectId], // linked record — must be an array
+          'project name': [projectId], // linked record — must be an array
           Description: description,
           Status: 'pending'
         }

@@ -109,9 +109,9 @@ export default function ProjectSearch({ projects, onSelect, selectedName }) {
             </>
           )}
 
-          {/* Filtered project list */}
-          {filtered.length > 0 ? (
-            filtered.map(project => (
+          {/* Filtered project list — exclude items already shown in recents */}
+          {filtered.filter(p => !showRecents || !validRecents.some(r => r.id === p.id)).length > 0 ? (
+            filtered.filter(p => !showRecents || !validRecents.some(r => r.id === p.id)).map(project => (
               <button
                 key={project.id}
                 type="button"
