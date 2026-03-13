@@ -22,9 +22,10 @@ export default function DailyView({ user }) {
   async function fetchLogs() {
     setLoading(true)
     try {
-      const res = await fetch(`/api/logs?userName=${encodeURIComponent(user.name)}&startDate=${date}&endDate=${date}`)
+      const res = await fetch(`/api/logs?startDate=${date}&endDate=${date}`)
       if (!res.ok) return
-      setLogs(await res.json())
+      const all = await res.json()
+      setLogs(all.filter(log => log.userId === user.id))
     } catch {
       // silently fail — empty state will show
     } finally {

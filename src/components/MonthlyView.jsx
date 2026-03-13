@@ -21,9 +21,10 @@ export default function MonthlyView({ user }) {
     setLoading(true)
     const { start, end } = monthBounds(yearMonth)
     try {
-      const res = await fetch(`/api/logs?userName=${encodeURIComponent(user.name)}&startDate=${start}&endDate=${end}`)
+      const res = await fetch(`/api/logs?startDate=${start}&endDate=${end}`)
       if (!res.ok) return
-      setLogs(await res.json())
+      const all = await res.json()
+      setLogs(all.filter(log => log.userId === user.id))
     } catch {
       // silently fail — empty state will show
     } finally {
