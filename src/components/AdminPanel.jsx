@@ -1,24 +1,76 @@
-// AdminPanel.jsx — admin dashboard
-// Allows admins to:
-//   - View all logs filtered by date range and user
-//   - Approve or reject individual logs (with optional note)
-//   - Add new projects (name + type)
-//   - Manage users: view list, create new user, deactivate user
-// All data is fetched from /api/logs, /api/projects, /api/users.
+// AdminPanel.jsx — admin dashboard shell
+// Fetches the full user list once (used by both the logs filter and user management).
+// Renders one of three sections based on the active tab: LOGS, BENUTZER, PROJEKTE.
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import AdminLogs from './AdminLogs'
+import AdminUsers from './AdminUsers'
+import AdminProjects from './AdminProjects'
+
+const TABS = [
+  { key: 'logs',     label: 'Logs' },
+  { key: 'users',    label: 'Benutzer' },
+  { key: 'projects', label: 'Projekte' }
+]
 
 export default function AdminPanel({ user, onLogout }) {
+  const [tab, setTab] = useState('logs')
+  const [users, setUsers] = useState([])
+
+  // Fetch all users once — needed by log filter dropdown and user management section
+  useEffect(() => {
+    fetch(`/api/users?role=admin`)
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data)) setUsers(data) })
+      .catch(() => {})
+  }, [])
+
+  // Reloads the user list — called after creating or updating a user
+  async function refreshUsers() {
+    try {
+      const res = await fetch(`/api/users?role=admin`)
+      const data = await res.json()
+      if (Array.isArray(data)) setUsers(data)
+    } catch {}
+  }
+
   return (
-    <div className="min-h-screen bg-white">
-      <header className="bg-mahalla-red text-white p-4 flex justify-between items-center">
-        <span className="font-bold">MaHalla Stunden — Admin</span>
-        <button onClick={onLogout} className="text-sm underline">Logout</button>
+    <div className="min-h-screen bg-black pb-16">
+
+      {/* Header */}
+      <header className="px-6 py-4 border-b border-white/10 flex justify-between items-center">
+        <div>
+          <span className="text-white font-bold uppercase tracking-[0.2em] text-sm">MaHalla Stunden</span>
+          <span className="text-[#FB0007] text-xs uppercase tracking-widest ml-3">Admin</span>
+        </div>
+        <button onClick={onLogout} className="text-white/40 text-xs uppercase tracking-widest">
+          Logout
+        </button>
       </header>
-      <div className="p-4">
-        <h2 className="text-xl font-bold mb-4">Admin Panel</h2>
-        <p className="text-gray-400">Admin panel — coming soon</p>
+
+      {/* Tab navigation */}
+      <div className="flex border-b border-white/10">
+        {TABS.map(t => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={[
+              'flex-1 py-3 text-xs font-bold uppercase tracking-[0.2em]',
+              tab === t.key ? 'text-white border-b-2 border-[#FB0007]' : 'text-white/30'
+            ].join(' ')}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
+
+      {/* Section content */}
+      <div className="max-w-4xl mx-auto">
+        {tab === 'logs'     && <AdminLogs users={users} adminUser={user} />}
+        {tab === 'users'    && <AdminUsers users={users} onRefresh={refreshUsers} adminUser={user} />}
+        {tab === 'projects' && <AdminProjects adminUser={user} />}
+      </div>
+
     </div>
   )
 }

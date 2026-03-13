@@ -159,9 +159,9 @@ async function createUser(apiKey, baseId, req, res) {
 }
 
 // Updates a user's active status or role. Admin only.
-// The user ID is the last segment of the request URL: /api/users/:id
+// Call as: PATCH /api/users?id=recXXXXXX
 async function updateUser(apiKey, baseId, req, res) {
-  const id = req.url.split('/').pop().split('?')[0]
+  const id = req.query.id
 
   if (!id) {
     return res.status(400).json({ error: 'User ID is required' })

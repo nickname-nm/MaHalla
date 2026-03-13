@@ -182,10 +182,9 @@ async function createLog(apiKey, baseId, req, res) {
 }
 
 // Updates a log's status and optional admin note.
-// The log ID is expected as the last segment of the URL path: /api/logs/:id
+// Call as: PATCH /api/logs?id=recXXXXXX
 async function updateLog(apiKey, baseId, req, res) {
-  // Vercel puts the full URL path in req.url — extract the record ID from the end
-  const id = req.url.split('/').pop().split('?')[0]
+  const id = req.query.id
 
   if (!id) {
     return res.status(400).json({ error: 'Log ID is required' })
